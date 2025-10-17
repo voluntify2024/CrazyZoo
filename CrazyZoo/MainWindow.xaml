@@ -1,0 +1,44 @@
+﻿<Window x:Class="CrazyZoo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CrazyZoo"
+        xmlns:resx="clr-namespace:CrazyZoo"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <ListBox x:Name="AnimalsListBox" Margin="10,10,503,293" SelectionChanged="AnimalsListBox_SelectionChanged"/>
+
+        <TextBlock x:Name="DetailsTextBlock" HorizontalAlignment="Left" Margin="322,10,0,0"
+                   TextWrapping="Wrap" Text="{x:Static resx:Resource1.DetailsText}" VerticalAlignment="Top"/>
+
+        <Button Content="{x:Static resx:Resource1.MakeSoundButton}" HorizontalAlignment="Left" Margin="320,56,0,0"
+                VerticalAlignment="Top" Click="SoundButton_Click"/>
+        <TextBlock x:Name="SoundTextBlock" HorizontalAlignment="Left" Margin="426,58,0,0"
+                   TextWrapping="Wrap" Text="{x:Static resx:Resource1.SoundText}" VerticalAlignment="Top"/>
+        
+        <Button Content="{x:Static resx:Resource1.FeedButton}" HorizontalAlignment="Left" Margin="320,96,0,0"
+                VerticalAlignment="Top" Click="FeedButton_Click"/>
+        <TextBox x:Name="InputFood" HorizontalAlignment="Left" Margin="400,97,0,0" Width="120"
+                 TextWrapping="Wrap" Text="{x:Static resx:Resource1.ChoosingFood}" VerticalAlignment="Top"/>
+        <TextBlock x:Name="EatingTextBlock" HorizontalAlignment="Left" Margin="555,96,0,0"
+                   TextWrapping="Wrap" Text="{x:Static resx:Resource1.EatingText}" VerticalAlignment="Top"/>
+
+        <Button Content="{x:Static resx:Resource1.AddAnimalButton}" HorizontalAlignment="Left" Margin="121,178,0,0"
+                VerticalAlignment="Top" Click="AddButton_Click"/>
+        <Button Content="{x:Static resx:Resource1.DeleteAnimalButton}" HorizontalAlignment="Left" Margin="220,178,0,0"
+                VerticalAlignment="Top" Click="DeleteButton_Click"/>
+        <Button Content="{x:Static resx:Resource1.CrazyActionButton}" HorizontalAlignment="Left" Margin="10,178,0,0"
+                VerticalAlignment="Top" Click="CrazyButton_Click"/>
+
+        <ListBox x:Name="CrazyActionsListBox" Margin="10,217,542,97"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top">
+            <TextBox x:Name="NameInputTextBox" Width="100"  Text="{x:Static resx:Resource1.NameInput}" />
+            <TextBox x:Name="AgeInputTextBox" Width="100" Margin="5,0,0,0" Text="{x:Static resx:Resource1.AgeInput}" />
+            <TextBox x:Name="TypeInputTextBox" Width="200" Margin="5,0,0,0" Text="{x:Static resx:Resource1.ChoosingType}" />
+            <TextBox x:Name="CrazyActionInputTextBox" Width="200" Margin="5,0,0,0" Text="{x:Static resx:Resource1.CrazyActionInput}" />
+        </StackPanel>
+    </Grid>
+</Window>
