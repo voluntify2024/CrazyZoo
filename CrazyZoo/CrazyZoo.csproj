@@ -57,8 +57,11 @@
     </ApplicationDefinition>
     <Compile Include="Animals\Cat.cs" />
     <Compile Include="Animals\CustomAnimal.cs" />
+    <Compile Include="Animals\Dinosaur.cs" />
     <Compile Include="Animals\Dog.cs" />
+    <Compile Include="Animals\FlyingSquirrel.cs" />
     <Compile Include="Animals\Parrot.cs" />
+    <Compile Include="Animals\Turtle.cs" />
     <Compile Include="Resource1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
