@@ -1,21 +1,24 @@
-using CrazyZoo.Animals.Interfaces;
-using CrazyZoo.Modules;
+using CrazyZoo.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace CrazyZoo.Animals
 {
-    public class Dinsaur : Animal, ICrazyAction
+    public class Dinosaur : Animal, ICrazyAction
     {
-        public override string MakeSound() => "Rawrawrawraw!";
+        public override string Species => "Dinosaur";
 
-        public string ActCrazy()
+        public override void MakeSound(Action<string> output)
         {
-            return $"{Name} ({Species}) plays football⚽";
+            output($"{Name} roars: RAAAWRRRR!!! 🦖");
+        }
+
+        public void ActCrazy(IEnumerable<Animal> allAnimals, Action<string> log)
+        {
+            log($"{Name} ({Species}) plays football⚽");
         }
     }
 }

@@ -22,6 +22,9 @@ namespace CrazyZoo
             Animals.Add(new Parrot { Name = "Kesha", Age = 3 });
             Animals.Add(new Dog { Name = "Lucy", Age = 8 });
             Animals.Add(new Cat { Name = "Nusha", Age = 6 });
+            Animals.Add(new Dinosaur { Name = "Terex", Age = 120 });
+            Animals.Add(new FlyingSquirrel { Name = "Bob", Age = 2 });
+            Animals.Add(new Turtle { Name = "Kevin", Age = 58 });
 
             AnimalsListBox.ItemsSource = Animals;
             CrazyActionsListBox.ItemsSource = CrazyActions;

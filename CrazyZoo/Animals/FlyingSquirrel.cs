@@ -1,11 +1,9 @@
-using CrazyZoo.Animals.Interfaces;
-using CrazyZoo.Modules;
+using CrazyZoo.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace CrazyZoo.Animals
 {
@@ -13,19 +11,25 @@ namespace CrazyZoo.Animals
     {
         private bool IsFlying = false;
 
-        public override string MakeSound() => "Ouuuui!";
+        public override string Species => "Flying Squirrel";
 
-        public void Fly()
+        public override void MakeSound(Action<string> output)
         {
-            IsFlying = !IsFlying;
+            output($"{Name} says: Ouuuui!");
         }
 
-        public string ActCrazy()
+        public void Fly(Action<string> log)
         {
-            Fly();
-            return IsFlying
-                ? $"{Name} ({Species}) becomes Batman at night🦇"
-                : $"{Name} can't fly";
+            IsFlying = !IsFlying;
+            log(IsFlying
+                ? $"{Name} spreads its arms and glides through the trees! 🦅"
+                : $"{Name} lands gracefully.");
+        }
+
+        public void ActCrazy(IEnumerable<Animal> allAnimals, Action<string> log)
+        {
+            Fly(log);
+            log($"{Name} ({Species}) becomes Batman at night 🦇");
         }
     }
 }
