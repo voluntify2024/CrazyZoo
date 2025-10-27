@@ -111,6 +111,12 @@ namespace CrazyZoo
                     return;
                 }
 
+                if (age < 0)
+                {
+                    MessageBox.Show("Age can't be less than 0!", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
                 if (string.IsNullOrWhiteSpace(type))
                 {
                     MessageBox.Show("Please enter a type!", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);

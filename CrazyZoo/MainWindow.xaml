@@ -13,24 +13,44 @@
         <TextBlock x:Name="DetailsTextBlock" HorizontalAlignment="Left" Margin="322,10,0,0"
                    TextWrapping="Wrap" Text="{x:Static resx:Resource1.DetailsText}" VerticalAlignment="Top"/>
 
-        <Button Content="{x:Static resx:Resource1.MakeSoundButton}" HorizontalAlignment="Left" Margin="320,56,0,0"
-                VerticalAlignment="Top" Click="SoundButton_Click"/>
+        <Button HorizontalAlignment="Left" Margin="320,56,0,0" VerticalAlignment="Top" Click="SoundButton_Click">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/Images/Play.png" Width="18" Height="18" Margin="0,0,5,0"/>
+                <TextBlock Text="{x:Static resx:Resource1.MakeSoundButton}" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Button>
         <TextBlock x:Name="SoundTextBlock" HorizontalAlignment="Left" Margin="426,58,0,0"
                    TextWrapping="Wrap" Text="{x:Static resx:Resource1.SoundText}" VerticalAlignment="Top"/>
-        
-        <Button Content="{x:Static resx:Resource1.FeedButton}" HorizontalAlignment="Left" Margin="320,96,0,0"
-                VerticalAlignment="Top" Click="FeedButton_Click"/>
+
+        <Button HorizontalAlignment="Left" Margin="320,96,0,0" VerticalAlignment="Top" Click="FeedButton_Click">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/Images/appetite_1147774.png" Width="18" Height="18" Margin="3,0,5,0"/>
+                <TextBlock Text="{x:Static resx:Resource1.FeedButton}" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Button>
         <TextBox x:Name="InputFood" HorizontalAlignment="Left" Margin="400,97,0,0" Width="120"
                  TextWrapping="Wrap" Text="{x:Static resx:Resource1.ChoosingFood}" VerticalAlignment="Top"/>
         <TextBlock x:Name="EatingTextBlock" HorizontalAlignment="Left" Margin="555,96,0,0"
                    TextWrapping="Wrap" Text="{x:Static resx:Resource1.EatingText}" VerticalAlignment="Top"/>
 
-        <Button Content="{x:Static resx:Resource1.AddAnimalButton}" HorizontalAlignment="Left" Margin="121,178,0,0"
-                VerticalAlignment="Top" Click="AddButton_Click"/>
-        <Button Content="{x:Static resx:Resource1.DeleteAnimalButton}" HorizontalAlignment="Left" Margin="220,178,0,0"
-                VerticalAlignment="Top" Click="DeleteButton_Click"/>
-        <Button Content="{x:Static resx:Resource1.CrazyActionButton}" HorizontalAlignment="Left" Margin="10,178,0,0"
-                VerticalAlignment="Top" Click="CrazyButton_Click"/>
+        <Button HorizontalAlignment="Left" Margin="121,178,0,0" VerticalAlignment="Top" Click="AddButton_Click">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Image Source="/Images/add.png" Width="18" Height="18" Margin="0,0,5,0"/>
+                <TextBlock Text="{x:Static resx:Resource1.AddAnimalButton}" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Button>
+        <Button HorizontalAlignment="Left" Margin="220,178,0,0" VerticalAlignment="Top" Click="DeleteButton_Click">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/Images/Trash bin.png" Width="18" Height="18" Margin="0,0,5,0"/>
+                <TextBlock Text="{x:Static resx:Resource1.DeleteAnimalButton}" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Button>
+        <Button HorizontalAlignment="Left" Margin="10,178,0,0" VerticalAlignment="Top" Click="CrazyButton_Click">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/Images/crazy_7747644.png" Width="18" Height="18" Margin="5,0,5,0"/>
+                <TextBlock Text="{x:Static resx:Resource1.CrazyActionButton}" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Button>
 
         <ListBox x:Name="CrazyActionsListBox" Margin="10,217,542,97"/>
 
