@@ -43,5 +43,11 @@ namespace CrazyZoo.Animals
                 );
             });
         }
+
+        public Penguin(string name, int age) : base(name, age)
+        {
+            Name = name;
+            Age = age;
+        }
     }
 }

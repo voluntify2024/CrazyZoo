@@ -35,5 +35,11 @@ namespace CrazyZoo.Animals
                 );
             });
         }
+
+        public Giraffe(string name, int age) : base(name, age)
+        {
+            Name = name;
+            Age = age;
+        }
     }
 }

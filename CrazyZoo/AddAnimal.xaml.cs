@@ -74,6 +74,12 @@ namespace CrazyZoo
                     return new Dinosaur(name, age);
                 case AnimalType.FlyingSquirrel:
                     return new FlyingSquirrel(name, age);
+                case AnimalType.Giraffe:
+                    return new Giraffe(name, age);
+                case AnimalType.Penguin:
+                    return new Penguin(name, age);
+                case AnimalType.Elephant:
+                    return new Elephant(name, age);
                 default:
                     return new CustomAnimal(type.ToString(), name, age);
             }

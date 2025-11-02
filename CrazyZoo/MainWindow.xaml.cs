@@ -48,6 +48,9 @@ namespace CrazyZoo
             var dinosaur = new Dinosaur("Terex", 120);
             var flyingSquirrel = new FlyingSquirrel("Bob", 2);
             var turtle = new Turtle("Kevin", 58);
+            var giraffe = new Giraffe("Longneck", 15);
+            var penguin = new Penguin("Waddles", 4);
+            var elephant = new Elephant("Dumbo", 25);
 
             _repo.Add(parrot);
             _repo.Add(dog);
@@ -55,6 +58,9 @@ namespace CrazyZoo
             _repo.Add(dinosaur);
             _repo.Add(flyingSquirrel);
             _repo.Add(turtle);
+            _repo.Add(giraffe);
+            _repo.Add(penguin);
+            _repo.Add(elephant);
 
             _enclosureManager.AddAnimal(parrot);
             _enclosureManager.AddAnimal(dog);
@@ -62,6 +68,9 @@ namespace CrazyZoo
             _enclosureManager.AddAnimal(dinosaur);
             _enclosureManager.AddAnimal(flyingSquirrel);
             _enclosureManager.AddAnimal(turtle);
+            _enclosureManager.AddAnimal(giraffe);
+            _enclosureManager.AddAnimal(penguin);
+            _enclosureManager.AddAnimal(elephant);
 
             _enclosureManager.LandEnclosure.AnimalJoined += a => CrazyActions.Add($"{a.Name} joined land enclosure");
             _enclosureManager.WaterEnclosure.AnimalJoined += a => CrazyActions.Add($"{a.Name} joined water enclosure");

@@ -14,6 +14,9 @@ namespace CrazyZoo
         Turtle,
         Dinosaur,
         FlyingSquirrel,
+        Elephant,
+        Giraffe,
+        Penguin,
         Custom
     }
 }
