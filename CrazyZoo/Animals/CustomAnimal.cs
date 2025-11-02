@@ -22,5 +22,12 @@ namespace CrazyZoo.Animals
         {
             output($"{Name} makes some sound!");
         }
+
+        public CustomAnimal(string species, string name, int age) : base(name, age)
+        {
+            _species = species;
+            Name = name;
+            Age = age;
+        }
     }
 }

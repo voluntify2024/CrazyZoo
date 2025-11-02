@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;   
 
 namespace CrazyZoo.Animals
 {
     public class FlyingSquirrel : Animal, IFlyable, ICrazyAction
     {
-        private bool IsFlying = false;
+        private bool IsFlying = true;
 
         public override string Species => "Flying Squirrel";
 
@@ -30,6 +31,20 @@ namespace CrazyZoo.Animals
         {
             Fly(log);
             log($"{Name} ({Species}) becomes Batman at night 🦇");
+        }
+
+        public override void OnFoodDropped()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                (Application.Current.MainWindow as MainWindow)?.AddCrazyAction($"{Name} grabs and flies away");
+            });
+        }
+
+        public FlyingSquirrel(string name, int age) : base(name, age)
+        {
+            Name = name;
+            Age = age;
         }
     }
 }

@@ -142,6 +142,15 @@ namespace CrazyZoo {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Feed All.
+        /// </summary>
+        public static string FeedAllButton {
+            get {
+                return ResourceManager.GetString("FeedAllButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на To feed.
         /// </summary>
         public static string FeedButton {
@@ -169,11 +178,29 @@ namespace CrazyZoo {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Show statistics.
+        /// </summary>
+        public static string ShowStatisticsButton {
+            get {
+                return ResourceManager.GetString("ShowStatisticsButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Sound.
         /// </summary>
         public static string SoundText {
             get {
                 return ResourceManager.GetString("SoundText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Type.
+        /// </summary>
+        public static string Type {
+            get {
+                return ResourceManager.GetString("Type", resourceCulture);
             }
         }
     }

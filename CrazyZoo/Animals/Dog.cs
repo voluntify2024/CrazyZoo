@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace CrazyZoo.Animals
 {
-    public class Dog : Animal, ICrazyAction
+    public class Dog : Animal, ICrazyAction, ILandAnimal
     {
         public override string Species => "Dog";
+        public bool IsLand { get; set; } = true;
 
         public override void MakeSound(Action<string> output)
         {
@@ -29,6 +31,26 @@ namespace CrazyZoo.Animals
             var randomCat = cats[random.Next(cats.Count)];
 
             log($"{Name} starts chasing {randomCat.Name} around excitedly!");
+        }
+
+        public void Walk(Action<string> log)
+        {
+            IsLand = true;
+            log($"{Name} walks excitedly!");
+        }
+
+        public override void OnFoodDropped()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                (Application.Current.MainWindow as MainWindow)?.AddCrazyAction($"{Name} runs happily to the food and barks!");
+            });
+        }
+
+        public Dog(string name, int age) : base(name, age)
+        {
+            Name = name;
+            Age = age;
         }
     }
 }

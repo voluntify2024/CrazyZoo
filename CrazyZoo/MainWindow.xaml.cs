@@ -1,8 +1,10 @@
 ﻿using CrazyZoo.Animals;
 using CrazyZoo.Interfaces;
+using CrazyZoo.Repositories;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,30 +12,90 @@ namespace CrazyZoo
 {
     public partial class MainWindow : Window
     {
-        private ObservableCollection<Animal> Animals = new ObservableCollection<Animal>();
         private ObservableCollection<string> CrazyActions = new ObservableCollection<string>();
 
-        private Animal SelectedAnimal => AnimalsListBox.SelectedItem as Animal;
+        private readonly AnimalRepository _repo = new AnimalRepository();
+        private readonly EnclosureManager _enclosureManager = new EnclosureManager();
+
+        private Animal SelectedAnimal
+        {
+            get
+            {
+                if (LandAnimalsListBox.SelectedItem is Animal landAnimal)
+                    return landAnimal;
+                if (AirAnimalsListBox.SelectedItem is Animal airAnimal)
+                    return airAnimal;
+                if (WaterAnimalsListBox.SelectedItem is Animal waterAnimal)
+                    return waterAnimal;
+                return null;
+            }
+        }
 
         public MainWindow()
         {
             InitializeComponent();
-
-            Animals.Add(new Parrot { Name = "Kesha", Age = 3 });
-            Animals.Add(new Dog { Name = "Lucy", Age = 8 });
-            Animals.Add(new Cat { Name = "Nusha", Age = 6 });
-            Animals.Add(new Dinosaur { Name = "Terex", Age = 120 });
-            Animals.Add(new FlyingSquirrel { Name = "Bob", Age = 2 });
-            Animals.Add(new Turtle { Name = "Kevin", Age = 58 });
-
-            AnimalsListBox.ItemsSource = Animals;
+            DataContext = _enclosureManager;
             CrazyActionsListBox.ItemsSource = CrazyActions;
+
+            LandAnimalsListBox.ItemsSource = _enclosureManager.LandEnclosure.Animals;
+            AirAnimalsListBox.ItemsSource = _enclosureManager.AirEnclosure.Animals;
+            WaterAnimalsListBox.ItemsSource = _enclosureManager.WaterEnclosure.Animals;
+            CrazyActionsListBox.ItemsSource = CrazyActions;
+
+            var parrot = new Parrot("Kesha", 3);
+            var dog = new Dog("Lucy", 8);
+            var cat = new Cat("Nusha", 6);
+            var dinosaur = new Dinosaur("Terex", 120);
+            var flyingSquirrel = new FlyingSquirrel("Bob", 2);
+            var turtle = new Turtle("Kevin", 58);
+
+            _repo.Add(parrot);
+            _repo.Add(dog);
+            _repo.Add(cat);
+            _repo.Add(dinosaur);
+            _repo.Add(flyingSquirrel);
+            _repo.Add(turtle);
+
+            _enclosureManager.AddAnimal(parrot);
+            _enclosureManager.AddAnimal(dog);
+            _enclosureManager.AddAnimal(cat);
+            _enclosureManager.AddAnimal(dinosaur);
+            _enclosureManager.AddAnimal(flyingSquirrel);
+            _enclosureManager.AddAnimal(turtle);
+
+            _enclosureManager.LandEnclosure.AnimalJoined += a => CrazyActions.Add($"{a.Name} joined land enclosure");
+            _enclosureManager.WaterEnclosure.AnimalJoined += a => CrazyActions.Add($"{a.Name} joined water enclosure");
+            _enclosureManager.AirEnclosure.AnimalJoined += a => CrazyActions.Add($"{a.Name} joined flying enclosure");
+
+            _enclosureManager.LandEnclosure.FoodDropped += () => CrazyActions.Add("Food dropped in land enclosure — animals are eating!");
+            _enclosureManager.WaterEnclosure.FoodDropped += () => CrazyActions.Add("Food dropped in water enclosure — animals are eating!");
+            _enclosureManager.AirEnclosure.FoodDropped += () => CrazyActions.Add("Food dropped in flying enclosure — animals are eating!");
         }
 
-        private void AnimalsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public void RefreshAnimalList()
         {
-            if (AnimalsListBox.SelectedItem is Animal selected)
-                DetailsTextBlock.Text = $"{selected.Name} - Age: {selected.Age}, Type: {selected.Species}";
+            Dispatcher.Invoke(() =>
+            {
+                LandAnimalsListBox.ItemsSource = null;
+                LandAnimalsListBox.ItemsSource = _enclosureManager.LandEnclosure.Animals;
+
+                AirAnimalsListBox.ItemsSource = null;
+                AirAnimalsListBox.ItemsSource = _enclosureManager.AirEnclosure.Animals;
+
+                WaterAnimalsListBox.ItemsSource = null;
+                WaterAnimalsListBox.ItemsSource = _enclosureManager.WaterEnclosure.Animals;
+            });
+        }
+
+        public void AddCrazyAction(string message)
+        {
+            Dispatcher.Invoke(() => CrazyActions.Add(message));
+        }
+
+        private void EnclosureListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (SelectedAnimal != null)
+                DetailsTextBlock.Text = $"{SelectedAnimal.Name} - Age: {SelectedAnimal.Age}, Type: {SelectedAnimal.Species}";
             else
                 DetailsTextBlock.Text = "No details";
         }
@@ -61,7 +123,10 @@ namespace CrazyZoo
 
             string food = InputFood.Text;
             if (string.IsNullOrWhiteSpace(food))
+            {
+                EatingTextBlock.Text = "Enter some food!";
                 return;
+            }
 
             EatingTextBlock.Text = $"{selected.Name} eats {food}";
             InputFood.Clear();
@@ -85,85 +150,18 @@ namespace CrazyZoo
             if (selected is ICrazyAction crazy)
             {
                 string result = "";
-                crazy.ActCrazy(Animals, msg => result = msg);
+                crazy.ActCrazy(_repo.GetAll(), msg => result = msg);
                 CrazyActions.Add(result);
             }
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                string name = NameInputTextBox.Text.Trim();
-                string ageText = AgeInputTextBox.Text.Trim();
-                string type = TypeInputTextBox.Text.Trim();
-                string crazy = CrazyActionInputTextBox.Text.Trim(); 
+           AddAnimalWindow addWindow = new AddAnimalWindow(_repo, _enclosureManager);
+            addWindow.Owner = this;
+            addWindow.ShowDialog();
 
-                if (string.IsNullOrWhiteSpace(name))
-                {
-                    MessageBox.Show("Please enter a name!", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-
-                if (!int.TryParse(ageText, out int age))
-                {
-                    MessageBox.Show("Please enter a valid age!", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-
-                if (age < 0)
-                {
-                    MessageBox.Show("Age can't be less than 0!", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-
-                if (string.IsNullOrWhiteSpace(type))
-                {
-                    MessageBox.Show("Please enter a type!", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-
-                Animal newAnimal;
-                switch (type.ToLower())
-                {
-                    case "cat":
-                        newAnimal = new Cat { Name = name, Age = age };
-                        break;
-                    case "dog":
-                        newAnimal = new Dog { Name = name, Age = age };
-                        break;
-                    case "parrot":
-                        newAnimal = new Parrot { Name = name, Age = age };
-                        break;
-                    default:
-                        newAnimal = new CustomAnimal(type)
-                        {
-                            Name = name,
-                            Age = age
-                        };
-                        break;
-                }
-
-                newAnimal.UserCrazyAction = crazy;
-
-                Animals.Add(newAnimal);
-
-                MessageBox.Show(
-                    $"{newAnimal.Name} the {newAnimal.Species} was successfully added!",
-                    "Success",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information
-                );
-
-                NameInputTextBox.Text = Resource1.NameInput;
-                AgeInputTextBox.Text = Resource1.AgeInput;
-                TypeInputTextBox.Text = Resource1.ChoosingType;
-                CrazyActionInputTextBox.Text = Resource1.CrazyActionInput;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Unexpected error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            RefreshAnimalList();
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
@@ -175,18 +173,36 @@ namespace CrazyZoo
                 return;
             }
 
-            Animals.Remove(selected);
+            _repo.Remove(selected);
 
-            var actionsToRemove = CrazyActions
-                .Where(a => a.StartsWith(selected.Name + " "))
-                .ToList();
+            _enclosureManager.RemoveAnimal(selected);
 
-            foreach (var action in actionsToRemove)
-                CrazyActions.Remove(action);
+            CrazyActions.Add($"{selected.Name} has been removed from the zoo.");
 
-            DetailsTextBlock.Text = Resource1.DetailsText;
-            EatingTextBlock.Text = Resource1.EatingText;
-            SoundTextBlock.Text = Resource1.SoundText;
+            DetailsTextBlock.Text = "No details";
+            EatingTextBlock.Text = "No feeding yet";
+            SoundTextBlock.Text = "No sound yet";
+        }
+
+
+
+        private async void FeedAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            CrazyActions.Add("Feeding all animals 🍽️");
+            await _enclosureManager.FeedAllAsync();
+            CrazyActions.Add("All animals have eaten!");
+        }
+
+        private void ShowStatisticsButton_Click(object sender, RoutedEventArgs e)
+        {
+            CrazyActions.Clear();
+            CrazyActions.Add("--- Animal Statistics ---");
+
+            var stats = _enclosureManager.GetStatistics();
+            foreach (var (type, count, avg) in stats)
+            {
+                CrazyActions.Add($"{type}: {count} animals (avg age: {avg:F1})");
+            }
         }
     }
 }

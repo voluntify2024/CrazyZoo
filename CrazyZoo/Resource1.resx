@@ -144,6 +144,9 @@
   <data name="EatingText" xml:space="preserve">
     <value>Eating</value>
   </data>
+  <data name="FeedAllButton" xml:space="preserve">
+    <value>Feed All</value>
+  </data>
   <data name="FeedButton" xml:space="preserve">
     <value>To feed</value>
   </data>
@@ -153,7 +156,13 @@
   <data name="NameInput" xml:space="preserve">
     <value>Enter the name</value>
   </data>
+  <data name="ShowStatisticsButton" xml:space="preserve">
+    <value>Show statistics</value>
+  </data>
   <data name="SoundText" xml:space="preserve">
     <value>Sound</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
   </data>
 </root>

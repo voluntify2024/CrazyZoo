@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace CrazyZoo.Animals
 {
@@ -11,7 +12,7 @@ namespace CrazyZoo.Animals
     {
         public override string Species => "Parrot";
 
-        public bool IsFlying { get; set; } = false;
+        public bool IsFlying { get; set; } = true;
 
         public override void MakeSound(Action<string> output)
         {
@@ -45,5 +46,19 @@ namespace CrazyZoo.Animals
             IsFlying = true;
             log($"{Name} flies around excitedly!");
         }
+
+        public override void OnFoodDropped()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                (Application.Current.MainWindow as MainWindow)?.AddCrazyAction($"{Name} screams: 'Yummy!' 🦜");
+            });
+        }
+
+        public Parrot(string name, int age) : base(name, age)
+        {
+            Name = name;
+            Age = age;
+        }
     }
- }
+}
