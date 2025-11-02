@@ -62,8 +62,11 @@
     <Compile Include="Animals\CustomAnimal.cs" />
     <Compile Include="Animals\Dinosaur.cs" />
     <Compile Include="Animals\Dog.cs" />
+    <Compile Include="Animals\Elephant.cs" />
     <Compile Include="Animals\FlyingSquirrel.cs" />
+    <Compile Include="Animals\Giraffe.cs" />
     <Compile Include="Animals\Parrot.cs" />
+    <Compile Include="Animals\Penguin.cs" />
     <Compile Include="Animals\Turtle.cs" />
     <Compile Include="AnimalType.cs" />
     <Compile Include="Enclosure.cs" />
