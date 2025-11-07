@@ -1,6 +1,7 @@
 ﻿using CrazyZoo.Animals;
 using CrazyZoo.Interfaces;
 using CrazyZoo.Repositories;
+using CrazyZoo.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -14,8 +15,9 @@ namespace CrazyZoo
     {
         private ObservableCollection<string> CrazyActions = new ObservableCollection<string>();
 
-        private readonly AnimalRepository _repo = new AnimalRepository();
-        private readonly EnclosureManager _enclosureManager = new EnclosureManager();
+        private readonly AnimalRepository _repo;
+        private readonly EnclosureManager _enclosureManager;
+        private readonly ILogger _logger;
 
         private Animal SelectedAnimal
         {
@@ -31,47 +33,58 @@ namespace CrazyZoo
             }
         }
 
-        public MainWindow()
+        public MainWindow(IRepository<Animal> repo, EnclosureManager enclosureManager, ILogger logger)
         {
             InitializeComponent();
+
+            _repo = (AnimalRepository)repo;
+            _enclosureManager = enclosureManager;
+            _logger = logger;
+
             DataContext = _enclosureManager;
             CrazyActionsListBox.ItemsSource = CrazyActions;
 
             LandAnimalsListBox.ItemsSource = _enclosureManager.LandEnclosure.Animals;
             AirAnimalsListBox.ItemsSource = _enclosureManager.AirEnclosure.Animals;
             WaterAnimalsListBox.ItemsSource = _enclosureManager.WaterEnclosure.Animals;
-            CrazyActionsListBox.ItemsSource = CrazyActions;
 
-            var parrot = new Parrot("Kesha", 3);
-            var dog = new Dog("Lucy", 8);
-            var cat = new Cat("Nusha", 6);
-            var dinosaur = new Dinosaur("Terex", 120);
-            var flyingSquirrel = new FlyingSquirrel("Bob", 2);
-            var turtle = new Turtle("Kevin", 58);
-            var giraffe = new Giraffe("Longneck", 15);
-            var penguin = new Penguin("Waddles", 4);
-            var elephant = new Elephant("Dumbo", 25);
+            AddInitialAnimals();
+            RegisterEnclosureEvents();
+        }
 
-            _repo.Add(parrot);
-            _repo.Add(dog);
-            _repo.Add(cat);
-            _repo.Add(dinosaur);
-            _repo.Add(flyingSquirrel);
-            _repo.Add(turtle);
-            _repo.Add(giraffe);
-            _repo.Add(penguin);
-            _repo.Add(elephant);
 
-            _enclosureManager.AddAnimal(parrot);
-            _enclosureManager.AddAnimal(dog);
-            _enclosureManager.AddAnimal(cat);
-            _enclosureManager.AddAnimal(dinosaur);
-            _enclosureManager.AddAnimal(flyingSquirrel);
-            _enclosureManager.AddAnimal(turtle);
-            _enclosureManager.AddAnimal(giraffe);
-            _enclosureManager.AddAnimal(penguin);
-            _enclosureManager.AddAnimal(elephant);
+        public void AddCrazyAction(string action)
+        {
+            CrazyActions.Add(action);
+        }
+    
 
+        private void AddInitialAnimals()
+        {
+            var animals = new Animal[]
+            {
+                new Parrot("Kesha", 3),
+                new Dog("Lucy", 8),
+                new Cat("Nusha", 6),
+                new Dinosaur("Terex", 120),
+                new FlyingSquirrel("Bob", 2),
+                new Turtle("Kevin", 58),
+                new Giraffe("Longneck", 15),
+                new Penguin("Waddles", 4),
+                new Elephant("Dumbo", 25)
+            };
+
+            foreach (var animal in animals)
+            {
+                _repo.Add(animal);
+                _enclosureManager.AddAnimal(animal);
+            }
+
+            if (_repo.GetAll().Any()) return;
+        }
+
+        private void RegisterEnclosureEvents()
+        {
             _enclosureManager.LandEnclosure.AnimalJoined += a => CrazyActions.Add($"{a.Name} joined land enclosure");
             _enclosureManager.WaterEnclosure.AnimalJoined += a => CrazyActions.Add($"{a.Name} joined water enclosure");
             _enclosureManager.AirEnclosure.AnimalJoined += a => CrazyActions.Add($"{a.Name} joined flying enclosure");
@@ -94,11 +107,6 @@ namespace CrazyZoo
                 WaterAnimalsListBox.ItemsSource = null;
                 WaterAnimalsListBox.ItemsSource = _enclosureManager.WaterEnclosure.Animals;
             });
-        }
-
-        public void AddCrazyAction(string message)
-        {
-            Dispatcher.Invoke(() => CrazyActions.Add(message));
         }
 
         private void EnclosureListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -166,11 +174,14 @@ namespace CrazyZoo
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-           AddAnimalWindow addWindow = new AddAnimalWindow(_repo, _enclosureManager);
+            AddAnimalWindow addWindow = new AddAnimalWindow(_repo, _enclosureManager, _logger);
             addWindow.Owner = this;
-            addWindow.ShowDialog();
 
-            RefreshAnimalList();
+            bool? result = addWindow.ShowDialog();
+            if (result == true)
+            {
+                RefreshAnimalList();
+            }
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
@@ -183,17 +194,13 @@ namespace CrazyZoo
             }
 
             _repo.Remove(selected);
-
             _enclosureManager.RemoveAnimal(selected);
-
             CrazyActions.Add($"{selected.Name} has been removed from the zoo.");
 
             DetailsTextBlock.Text = "No details";
             EatingTextBlock.Text = "No feeding yet";
             SoundTextBlock.Text = "No sound yet";
         }
-
-
 
         private async void FeedAllButton_Click(object sender, RoutedEventArgs e)
         {

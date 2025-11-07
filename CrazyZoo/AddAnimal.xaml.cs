@@ -1,4 +1,5 @@
 ﻿using CrazyZoo.Animals;
+using CrazyZoo.Interfaces;
 using CrazyZoo.Repositories;
 using System;
 using System.Collections.Generic;
@@ -18,14 +19,16 @@ namespace CrazyZoo
 {
     public partial class AddAnimalWindow : Window
     {
-        private readonly AnimalRepository _repo;
+        private readonly IRepository<Animal> _repo;
         private readonly EnclosureManager _enclosureManager;
+        private readonly ILogger _logger;
 
-        public AddAnimalWindow(AnimalRepository repo, EnclosureManager manager)
+        public AddAnimalWindow(IRepository<Animal> repo, EnclosureManager manager, ILogger logger)
         {
             InitializeComponent();
             _repo = repo;
             _enclosureManager = manager;
+            _logger = logger;
 
             TypeComboBox.ItemsSource = Enum.GetValues(typeof(AnimalType));
         }
@@ -53,6 +56,9 @@ namespace CrazyZoo
 
             _repo.Add(animal);
             _enclosureManager.AddAnimal(animal);
+
+            _logger.Log($"Added animal: {animal.Name}, type: {animal.Species}");
+            MessageBox.Show($"{animal.Name} successfully added!");
 
             DialogResult = true;
             Close();
@@ -86,3 +92,4 @@ namespace CrazyZoo
         }
     }
 }
+
