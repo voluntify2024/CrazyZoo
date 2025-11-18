@@ -1,6 +1,6 @@
-﻿using CrazyZoo.Animals;
-using CrazyZoo.Interfaces;
-using CrazyZoo.Repositories;
+﻿using CrazyZoo.Domain.Entities;
+using CrazyZoo.Domain.Interfaces;
+using CrazyZoo.Infrastructure.Repositories;
 using CrazyZoo.Services;
 using System;
 using System.Collections.ObjectModel;

@@ -137,31 +137,13 @@
     <Compile Include="AddAnimal.xaml.cs">
       <DependentUpon>AddAnimal.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Animals\Cat.cs" />
-    <Compile Include="Animals\CustomAnimal.cs" />
-    <Compile Include="Animals\Dinosaur.cs" />
-    <Compile Include="Animals\Dog.cs" />
-    <Compile Include="Animals\Elephant.cs" />
-    <Compile Include="Animals\FlyingSquirrel.cs" />
-    <Compile Include="Animals\Giraffe.cs" />
-    <Compile Include="Animals\Parrot.cs" />
-    <Compile Include="Animals\Penguin.cs" />
-    <Compile Include="Animals\Turtle.cs" />
-    <Compile Include="AnimalType.cs" />
     <Compile Include="Enclosure.cs" />
     <Compile Include="EnclosureManager.cs" />
-    <Compile Include="Interfaces\ILandAnimal.cs" />
-    <Compile Include="Interfaces\ILogger.cs" />
-    <Compile Include="Interfaces\IRepository.cs" />
-    <Compile Include="Interfaces\ISwimmable.cs" />
-    <Compile Include="Repositories\AnimalRepository.cs" />
     <Compile Include="Resource1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource1.resx</DependentUpon>
     </Compile>
-    <Compile Include="Services\JsonLogger.cs" />
-    <Compile Include="Services\XmlLogger.cs" />
     <Page Include="AddAnimal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -170,13 +152,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Animals\Animal.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Interfaces\IFlyable.cs" />
-    <Compile Include="Interfaces\ICrazyAction.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -222,6 +201,20 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\statistics.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CrazyZoo.Application\CrazyZoo.ServicesLayer.csproj">
+      <Project>{78aeb889-b741-40d8-bcda-99d02dbb27de}</Project>
+      <Name>CrazyZoo.ServicesLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CrazyZoo.Domain\CrazyZoo.Domain.csproj">
+      <Project>{2c096af5-a52a-48ac-91d7-3c0dbf879ae1}</Project>
+      <Name>CrazyZoo.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CrazyZoo.Infrastructure\CrazyZoo.Infrastructure.csproj">
+      <Project>{7808ac71-b8d7-4e07-bccd-8a4e6b3de7a6}</Project>
+      <Name>CrazyZoo.Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

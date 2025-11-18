@@ -1,4 +1,5 @@
-﻿using CrazyZoo.Animals;
+﻿using CrazyZoo.Domain.Entities;
+using CrazyZoo.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

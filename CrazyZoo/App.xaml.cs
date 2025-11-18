@@ -1,7 +1,7 @@
-﻿using CrazyZoo.Animals;
-using CrazyZoo.Interfaces;
-using CrazyZoo.Repositories;
-using CrazyZoo.Services;
+﻿using CrazyZoo.Domain.Entities;
+using CrazyZoo.Domain.Interfaces;
+using CrazyZoo.Infrastructure.Repositories;
+using CrazyZoo.Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 
